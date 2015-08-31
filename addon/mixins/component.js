@@ -4,6 +4,10 @@ const {
   on
 } = Ember;
 
+const normal = "color: black",
+      method = "color: green; font-weight: bold",
+      component = "color: steelblue";
+
 export default Ember.Mixin.create({
   // called from constructor of Component
   // called when component is initialized
@@ -44,7 +48,8 @@ function log(hook) {
   return function() {
     this._super.apply(this, arguments);
     const name = this.elementId || this.construtor.toString();
-    console.log(`${name} called ${hook} hook with`, arguments);
+    let colors = [component, normal, method, normal];
+    console.log(`%c${name}%c called %c${hook}%c hook with`, ...colors.concat(arguments));
   };
 }
 
@@ -57,7 +62,8 @@ function instrumentActions(){
     const callback = actions[actionName];
     actions[actionName] = function() {
       const name = this.elementId || this.construtor.toString();
-      console.log(`${name} called action ${actionName} with `, arguments);
+      let colors = [component, normal, method, normal];
+      console.log(`${name} called action ${actionName} with `, ...colors.concat(arguments));
       return callback.apply(this, arguments);
     };
   });
